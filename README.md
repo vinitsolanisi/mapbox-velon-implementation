@@ -4,7 +4,7 @@ A real-time cyclist tracking application using Mapbox GL JS, similar to Uber's n
 
 ## Screenshot
 
-![Cyclist Tracker Screenshot](screenshot.png)
+![Image](https://github.com/user-attachments/assets/a441ab1d-8452-4f0e-a594-d81ce640910c)
 
 The interface shows:
 
