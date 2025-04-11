@@ -15,14 +15,11 @@ The interface shows:
 -   Information panel at the bottom showing cyclist details (name, speed, distance, ETA)
 -   Control buttons at the top to toggle simulation and following mode
 
-## Demo Video
+## Demo
 
-<video width="100%" controls>
-  <source src="public/assets/Cyclist Tracker.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Cyclist Tracker Demo](Cyclist%20Tracker.gif)
 
-_Note: The video demonstrates the real-time tracking functionality, showing how the cyclist marker moves along the route, how the pulsing effect works, and how the information panel updates dynamically._
+_Note: The demo shows the real-time tracking functionality, showing how the cyclist marker moves along the route, how the pulsing effect works, and how the information panel updates dynamically._
 
 ## Features
 
