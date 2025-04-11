@@ -17,7 +17,7 @@ The interface shows:
 
 ## Demo
 
-![Cyclist Tracker Demo](Cyclist%20Tracker.gif)
+![Cyclist Tracker Demo](![Image](https://github.com/user-attachments/assets/77bc74f7-3b26-4f9f-882e-2aa95b6f4edc))
 
 _Note: The demo shows the real-time tracking functionality, showing how the cyclist marker moves along the route, how the pulsing effect works, and how the information panel updates dynamically._
 
