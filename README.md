@@ -2,6 +2,28 @@
 
 A real-time cyclist tracking application using Mapbox GL JS, similar to Uber's navigation interface.
 
+## Screenshot
+
+![Cyclist Tracker Screenshot](screenshot.png)
+
+The interface shows:
+
+-   A clean, modern map interface with the cyclist's location highlighted by a dark blue marker
+-   A pulsing purple circle around the cyclist showing their vicinity
+-   A blue line representing the route path
+-   Navigation controls in the top-right corner
+-   Information panel at the bottom showing cyclist details (name, speed, distance, ETA)
+-   Control buttons at the top to toggle simulation and following mode
+
+## Demo Video
+
+<video width="100%" controls>
+  <source src="public/assets/Cyclist Tracker.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+_Note: The video demonstrates the real-time tracking functionality, showing how the cyclist marker moves along the route, how the pulsing effect works, and how the information panel updates dynamically._
+
 ## Features
 
 -   Real-time tracking of cyclist locations
@@ -45,6 +67,32 @@ This application uses:
 -   **Express** for serving the web application
 
 In a real-world scenario, the cyclist's device would send GPS coordinates to the server, which would then broadcast them to connected viewers. For demonstration purposes, this app includes a simulation mode that shows a cyclist moving along a predefined route.
+
+## Implementation Details
+
+### Map and Route Visualization
+
+-   The map is rendered using Mapbox GL JS with a custom style
+-   The cyclist's route is drawn as a GeoJSON LineString with custom styling
+-   A pulsing circle effect is created using CSS animations to highlight the cyclist's position
+
+### Real-time Location Updates
+
+-   Socket.IO establishes a persistent connection between clients and server
+-   When a cyclist's location changes, updates are broadcasted to all connected clients
+-   The server acts as a message broker between cyclists and viewers
+
+### UI Components
+
+-   The cyclist marker is a custom HTML element with a pulsing animation
+-   Information panel is dynamically updated with the cyclist's current stats
+-   Follow mode keeps the map centered on the cyclist with smooth animations
+
+### Simulation Mode
+
+-   For demonstration purposes, the app simulates a cyclist moving along a predefined route
+-   Each movement triggers calculations for speed, distance, and ETA
+-   The simulation can be started and stopped with the control buttons
 
 ## Customization
 
