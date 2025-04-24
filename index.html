@@ -30,6 +30,8 @@
             right: 20px;
             display: flex;
             gap: 10px;
+            flex-direction: column;
+            z-index: 1;
         }
         
         button {
@@ -49,12 +51,41 @@
             background: #00b894;
             color: white;
         }
+
+        .file-input-container {
+            background: #0984e3;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .file-input-container:hover {
+            background: #0873c4;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-input-label {
+            cursor: pointer;
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
     
     <div class="controls">
+        <div class="file-input-container">
+            <label class="file-input-label">
+                Upload GPX File
+                <input type="file" id="gpx-file" class="file-input" accept=".gpx">
+            </label>
+        </div>
         <button class="simulate-btn" onclick="startSimulation()">Simulate Cyclist</button>
         <button class="follow-btn" onclick="toggleFollow()">Follow Cyclist</button>
     </div>

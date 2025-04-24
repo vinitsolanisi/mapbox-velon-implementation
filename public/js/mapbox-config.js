@@ -1,65 +1,75 @@
 // Mapbox access token
-const ACCESS_TOKEN = "pk.eyJ1IjoidmVsb25tYXAiLCJhIjoiY205aWc3Y3BmMDF3bzJscGo0ZXE5bjBieSJ9.li6moIN2GBHveX4OtKsVjA"; // Replace with your actual token
+const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoidmVsb25tYXAiLCJhIjoiY205aWc3Y3BmMDF3bzJscGo0ZXE5bjBieSJ9.li6moIN2GBHveX4OtKsVjA';
 
 // Initialize mapbox
-mapboxgl.accessToken = ACCESS_TOKEN;
+mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
+
+// Map styles
+const MAP_STYLES = {
+	dark: 'mapbox://styles/mapbox/dark-v11',
+	light: 'mapbox://styles/mapbox/light-v11',
+	streets: 'mapbox://styles/mapbox/streets-v12',
+	satellite: 'mapbox://styles/mapbox/satellite-streets-v12',
+	race: 'mapbox://styles/mapbox/navigation-night-v1'
+};
 
 // Default map settings
 const DEFAULT_MAP_SETTINGS = {
-	container: "map",
-	style: "mapbox://styles/mapbox/dark-v11",
-	center: [11.4950, 43.2570],
-	zoom: 13,
-	pitch: 45,
-	bearing: 120 // Rotated 120 degrees to match desired view
+	container: 'map',
+	style: MAP_STYLES.dark,
+	center: [11.4773, 43.2583],
+	zoom: 12,
+	bearing: 120,
+	pitch: 45
 };
 
-// Route style properties
-const ROUTE_STYLE = {
-	id: "route",
-	type: "line",
-	source: "route",
-	layout: {
-		"line-join": "round",
-		"line-cap": "round"
+// Route style for different themes
+const ROUTE_STYLES = {
+	dark: {
+		'line-color': '#2ecc71',
+		'line-width': 8,
+		'line-opacity': 0.8
 	},
-	paint: {
-		"line-color": "#6171e5",
-		"line-width": 3,
-		"line-opacity": 0.8,
-		"line-dasharray": [2, 1]
+	light: {
+		'line-color': '#27ae60',
+		'line-width': 8,
+		'line-opacity': 0.8
 	},
+	race: {
+		'line-color': '#00ffcc',
+		'line-width': 8,
+		'line-opacity': 0.8
+	},
+	satellite: {
+		'line-color': '#2ecc71',
+		'line-width': 8,
+		'line-opacity': 0.8
+	}
 };
 
-// Path radius style (the circular area around the cyclist)
+// Path radius style
 const PATH_RADIUS_STYLE = {
-	id: "path-radius",
-	type: "circle",
-	source: "cyclist",
+	id: 'path-radius',
+	type: 'circle',
+	source: 'cyclist',
 	paint: {
-		"circle-radius": 70,
-		"circle-color": "#6171e5",
-		"circle-opacity": 0.2,
-	},
+		'circle-radius': 70,
+		'circle-color': '#2ecc71',
+		'circle-opacity': 0.1
+	}
 };
 
-// Waypoint marker style
+// Waypoint style
 const WAYPOINT_STYLE = {
-	id: "waypoints",
-	type: "symbol",
-	source: "waypoints",
+	id: 'waypoints',
+	type: 'symbol',
+	source: 'waypoints',
 	layout: {
-		"text-field": ["get", "name"],
-		"text-size": 12,
-		"text-offset": [0, 1.5],
-		"text-anchor": "top",
-		"icon-image": "circle",
-		"icon-size": 0.5
-	},
-	paint: {
-		"text-color": "#2ecc71",
-		"text-halo-color": "#000000",
-		"text-halo-width": 1
+		'icon-image': 'circle',
+		'icon-size': 0.5,
+		'text-field': ['get', 'name'],
+		'text-offset': [0, 1],
+		'text-anchor': 'top'
 	}
 };
 
@@ -217,3 +227,27 @@ const WAYPOINTS = [
 		name: "KM_100"
 	}
 ];
+
+// After map loads, add your custom tileset
+const addVelonTileset = (map) => {
+	map.on('load', () => {
+		// Add your tileset source
+		map.addSource('velon-tileset', {
+			type: 'vector',
+			url: 'mapbox://velonmap.22n3mxep'
+		});
+
+		// Add the tileset layer
+		map.addLayer({
+			id: 'velon-layer',
+			type: 'line',
+			source: 'velon-tileset',
+			'source-layer': 'tracks',
+			paint: {
+				'line-color': '#2ecc71',
+				'line-width': 8,
+				'line-opacity': 0.8
+			}
+		});
+	});
+};
