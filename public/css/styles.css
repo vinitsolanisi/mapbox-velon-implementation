@@ -122,3 +122,33 @@ button:hover {
         opacity: 0;
     }
 }
+
+/* Waypoint marker styles */
+.waypoint-marker {
+    width: 10px;
+    height: 10px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    border: 2px solid #000;
+}
+
+.waypoint-label {
+    color: #2ecc71;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    margin-top: 5px;
+}
+
+/* Update route line style */
+.mapboxgl-canvas-container .route-line {
+    stroke-dasharray: 5, 5;
+    animation: dash 20s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 1000;
+    }
+}

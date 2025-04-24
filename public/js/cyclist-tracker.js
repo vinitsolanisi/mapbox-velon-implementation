@@ -38,6 +38,35 @@ class CyclistTracker {
 			},
 		});
 
+		// Add waypoints source
+		this.map.addSource("waypoints", {
+			type: "geojson",
+			data: {
+				type: "FeatureCollection",
+				features: WAYPOINTS.map(waypoint => ({
+					type: "Feature",
+					geometry: {
+						type: "Point",
+						coordinates: waypoint.coordinates
+					},
+					properties: {
+						name: waypoint.name
+					}
+				}))
+			}
+		});
+
+		// Load custom marker image
+		this.map.loadImage(
+			'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+			(error, image) => {
+				if (error) throw error;
+				this.map.addImage('circle', image);
+				// Add the waypoint markers layer
+				this.map.addLayer(WAYPOINT_STYLE);
+			}
+		);
+
 		// Add the route layer to the map
 		this.map.addLayer(ROUTE_STYLE);
 
