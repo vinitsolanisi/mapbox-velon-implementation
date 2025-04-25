@@ -31,14 +31,14 @@ const ROUTE_STYLES = {
 		'line-opacity': 0.8
 	},
 	light: {
-		'line-color': '#27ae60',
+		'line-color': '#e74c3c',
 		'line-width': 8,
-		'line-opacity': 0.8
+		'line-opacity': 1
 	},
 	race: {
-		'line-color': '#00ffcc',
+		'line-color': '#BF00FF', // Electric Purple for active route
 		'line-width': 8,
-		'line-opacity': 0.8
+		'line-opacity': 1
 	},
 	satellite: {
 		'line-color': '#2ecc71',
@@ -237,6 +237,19 @@ const addVelonTileset = (map) => {
 			url: 'mapbox://velonmap.22n3mxep'
 		});
 
+		// Get current style
+		const currentStyle = map.getStyle().name;
+		let trackColor;
+
+		// Set track color based on style
+		if (currentStyle.includes('Light')) {
+			trackColor = '#2980b9'; // Blue for light mode
+		} else if (currentStyle.includes('Navigation Night')) {
+			trackColor = '#FFA500'; // Orange for race mode background tracks
+		} else {
+			trackColor = '#404040'; // Default dark grey
+		}
+
 		// Add the tileset layer
 		map.addLayer({
 			id: 'velon-layer',
@@ -244,10 +257,78 @@ const addVelonTileset = (map) => {
 			source: 'velon-tileset',
 			'source-layer': 'tracks',
 			paint: {
-				'line-color': '#2ecc71',
-				'line-width': 8,
+				'line-color': trackColor,
+				'line-width': 6,
 				'line-opacity': 0.8
 			}
 		});
 	});
 };
+
+// Function to change map style
+function changeMapStyle(style) {
+	// Update map style
+	window.map.setStyle(MAP_STYLES[style]);
+	
+	// Update route style after style load
+	window.map.once('style.load', () => {
+		// Re-add custom sources and layers
+		addVelonTileset(window.map);
+		
+		// Re-add route source and layer
+		window.map.addSource('route', {
+			type: 'geojson',
+			data: {
+				type: 'Feature',
+				geometry: {
+					type: 'LineString',
+					coordinates: window.currentRoute || []
+				}
+			}
+		});
+
+		// Add route layer with proper style
+		window.map.addLayer({
+			id: 'route',
+			type: 'line',
+			source: 'route',
+			layout: {
+				'line-join': 'round',
+				'line-cap': 'round'
+			},
+			paint: ROUTE_STYLES[style] || ROUTE_STYLES.race
+		});
+
+		// Re-add waypoints
+		window.map.addSource('waypoints', {
+			type: 'geojson',
+			data: {
+				type: 'FeatureCollection',
+				features: window.currentWaypoints.map(waypoint => ({
+					type: 'Feature',
+					geometry: {
+						type: 'Point',
+						coordinates: waypoint.coordinates
+					},
+					properties: {
+						name: waypoint.name
+					}
+				}))
+			}
+		});
+
+		// Re-add waypoint markers
+		window.map.loadImage(
+			'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+			(error, image) => {
+				if (error) throw error;
+				window.map.addImage('circle', image);
+				window.map.addLayer(WAYPOINT_STYLE);
+			}
+		);
+	});
+
+	// Update active button state
+	document.querySelectorAll('.style-btn').forEach(btn => btn.classList.remove('active'));
+	document.querySelector(`.${style}-style`).classList.add('active');
+}
